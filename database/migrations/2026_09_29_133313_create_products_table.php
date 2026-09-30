@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products_controllers', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('name', 100);
+            $table->string('description');
+            $table->decimal('price', 10, 2);
+            $table->enum('status', ['cancelled', 'pending', 'success'])->default('pending');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products_controllers');
+        Schema::dropIfExists('products');
     }
 };
