@@ -6,25 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name', 100);
-            $table->string('description');
-            $table->decimal('price', 10, 2);
-            $table->enum('status', ['cancelled', 'pending', 'success'])->default('pending');
+            $table->foreignId('category_id')->constrained()->restrictOnDelete();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('short_description');
+            $table->text('full_description');
+            $table->unsignedBigInteger('price'); // IDR
+            $table->string('image_url'); // gambar utama
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('rejection_reason')->nullable();
+            $table->boolean('is_featured')->default(false);
+            $table->string('payment_proof')->nullable(); // bukti transfer listing fee
+            $table->unsignedInteger('views_count')->default(0);
             $table->timestamps();
+            $table->index('status');
+            $table->index(['status', 'category_id']);
+            $table->index(['status', 'is_featured']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');
