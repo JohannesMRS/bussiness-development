@@ -23,7 +23,7 @@ require __DIR__.'/auth.php';
 
 // Admin
 Route::middleware(['auth', 'verified', 'role:admin'])
-->group(function(){
+->prefix('admin')->group(function(){
     Route::get('/admin/index', [AdminDashboardController::class, 'index'])->name('admin.index');
     Route::get('/admin/product', [AdminProductController::class, 'index'])->name('admin.product.index');
     Route::post('/admin/product/store', [AdminProductController::class, 'store'])->name('admin.product.store');
