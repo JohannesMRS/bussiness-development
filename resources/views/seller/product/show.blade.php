@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Product Detail {{ $product->name }} - Tutorial CRUD Laravel 12 @ qadrlabs.com</title>
+    <title>Product Detail {{ $product->title }} - Tutorial CRUD Laravel 12 @ qadrlabs.com</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 
@@ -16,7 +16,7 @@
     <div class="grid grid-cols-8 gap-4 mb-4 p-5">
         <div class="col-span-4 mt-2">
             <h1 class="text-3xl font-bold">
-                Product Detail {{ $product->name }}
+                Product Detail {{ $product->title }}
             </h1>
 
         </div>
@@ -31,7 +31,7 @@
                         Product Name
                     </th>
                     <td class="px-6 py-4">
-                        {{ $product->name}}
+                        {{ $product->title}}
                     </td>
                 </tr>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
@@ -39,7 +39,7 @@
                         Product Code
                     </th>
                     <td class="px-6 py-4">
-                        {{ $product->code }}
+                        {{ $product->slug }}
                     </td>
                 </tr>
 
@@ -66,11 +66,11 @@
 
     </div>
 
-    {{-- <a href="{{ route('product.index') }}"
+    <a href="{{ route('seller.product.index') }}"
        class="mt-3 inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full ">back</a>
-    <a href="{{ route('product.edit', $product) }}"
+    <a href="{{ route('seller.product.edit', $product->id) }}"
        class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full"
-       id="edit-product-btn">Edit Product</a> --}}
+       id="edit-product-btn">Edit Product</a>
 
 </div>
 

@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Seller\DashboardController as SellerDashboardController;
-use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,11 +12,18 @@ Route::get('/', function () {
 
 // Admin
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/product', [AdminProductController::class, 'index'])->name('admin.product.index');
+Route::post('/admin/product/store', [AdminProductController::class, 'store'])->name('admin.product.store');
+Route::get('/admin/product/{id}', [AdminProductController::class, 'show'])->name('admin.product.show');
+Route::get('/admin/product/{id}/edit', [AdminProductController::class, 'edit'])->name('admin.product.edit');
+Route::put('/admin/product/{id}', [AdminProductController::class, 'update'])->name('admin.product.update');
+
 
 
 // Seller
 Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])->name('seller.dashboard');
-
-Route::get('/seller/product/', [ProductController::class, 'index'])->name('seller.product.index');
-Route::get('/seller/product/{id}', [ProductController::class, 'show'])->name('seller.product.show');
-Route::post('/seller/product/store', [ProductController::class, 'store'])->name('seller.product.store');
+Route::get('/seller/product', [SellerProductController::class, 'index'])->name('seller.product.index');
+Route::post('/seller/product/store', [SellerProductController::class, 'store'])->name('seller.product.store');
+Route::get('/seller/product/{id}', [SellerProductController::class, 'show'])->name('seller.product.show');
+Route::get('/seller/product/{id}/edit', [SellerProductController::class, 'edit'])->name('seller.product.edit');
+Route::put('/seller/product/{id}', [SellerProductController::class, 'update'])->name('seller.product.update');

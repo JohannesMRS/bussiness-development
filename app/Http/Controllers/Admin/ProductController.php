@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,8 +9,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::latest()->paginate(10);
-        return view('seller.product.index', compact('products'));
+        return view('admin.product.index');
     }
 
     public function store(Request $request){
@@ -21,8 +20,11 @@ class ProductController extends Controller
             'full_description'=>'required',
             'price'=>'required',
             'image_url'=>'required',
+            'status'=>'required',
+            'rejection_reason'=>'required',
             'payment_proof'=>'required',
         ]);
+
 
         Product::create([
             'title'=>$request->title,
@@ -31,21 +33,22 @@ class ProductController extends Controller
             'full_description'=>$request->fullDescription,
             'price'=>$request->price,
             'image_url'=>$request->image_url,
+            'status'=>$request->status,
+            'rejection_reason'=>$request->rejection_reason,
             'payment_proof'=>$request->payment_proof,
         ]);
-
         return redirect()->back()->with('success', 'Product created successfully');
     }
 
     public function show($id){
         $product = Product::findOrFail($id);
-        return view('seller.product.show', compact('product'));
+        return view('admin.product.show', compact('product'));
     }
 
     public function edit($id){
         $product = Product::findOrFail($id);
 
-        return view('seller.product.edit', compact('product'));
+        return view('admin.product.edit', compact('product'));
         
     }
 
@@ -57,6 +60,8 @@ class ProductController extends Controller
             'full_description'=>'required',
             'price'=>'required',
             'image_url'=>'required',
+            'status'=>'required',
+            'rejection_reason'=>'required',
             'payment_proof'=>'required',
         ]);
 
@@ -67,9 +72,12 @@ class ProductController extends Controller
             'full_description'=>$request->fullDescription,
             'price'=>$request->price,
             'image_url'=>$request->image_url,
+            'status'=>$request->status,
+            'rejection_reason'=>$request->rejection_reason,
             'payment_proof'=>$request->payment_proof,
         ]);
         return redirect()->back()->with('success', 'Product updated successfully');
     }
+
 
 }

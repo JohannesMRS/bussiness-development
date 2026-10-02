@@ -14,6 +14,7 @@ class Product extends Model
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
+        'id',
         'user_id',
         'category_id',
         'title',
