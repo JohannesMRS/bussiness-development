@@ -39,8 +39,8 @@
                 <a href="{{ route('home') }}" class="group inline-flex min-h-11 items-center gap-3 rounded-xl" aria-label="{{ __('public.brand.name') }}">
                     <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-sm font-black tracking-tight text-white shadow-soft dark:text-slate-950">BD</span>
                     <span class="leading-tight">
-                        <span class="block font-display text-lg font-bold text-ink">BizDev</span>
-                        <span class="hidden text-[11px] font-semibold tracking-wide text-muted sm:block">HMPS MI POLMED</span>
+                        <span class="block font-display text-lg font-bold text-ink">Bussiness Development</span>
+                        <span class="hidden text-[11px] font-semibold tracking-wide text-muted sm:block">HMPS Manajemen Informatika</span>
                     </span>
                 </a>
 

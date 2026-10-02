@@ -2,7 +2,7 @@
     <div class="page-container flex min-h-[72px] items-center justify-between gap-4">
         <a href="{{ Auth::user()->role === 'admin' ? route('admin.index') : route('seller.index') }}" class="inline-flex min-h-11 items-center gap-3 rounded-xl">
             <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-xs font-black text-white dark:text-slate-950">BD</span>
-            <span class="font-display text-lg font-bold text-ink">BizDev <span class="hidden text-xs font-semibold text-muted sm:inline">{{ Auth::user()->role === 'admin' ? 'ADMIN' : 'SELLER' }}</span></span>
+            <span class="font-display text-lg font-bold text-ink">Bussiness Development <span class="hidden text-xs font-semibold text-muted sm:inline">{{ Auth::user()->role === 'admin' ? 'ADMIN' : 'SELLER' }}</span></span>
         </a>
 
         <div class="hidden items-center gap-1 md:flex">

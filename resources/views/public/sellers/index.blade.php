@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', __('public.seller.directory_title').' | BizDev HMPS MI Polmed')
+@section('title', __('public.seller.directory_title').' | Bussiness Development')
 @section('meta_description', __('public.seller.directory_lead'))
 
 @section('content')

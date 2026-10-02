@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', __('public.catalog.title').' | BizDev HMPS MI Polmed')
+@section('title', __('public.catalog.title').' | Bussiness Development')
 @section('meta_description', __('public.catalog.lead'))
 
 @section('content')

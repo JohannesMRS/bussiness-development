@@ -2,7 +2,7 @@
 
 return [
     'brand' => [
-        'name' => 'BizDev HMPS MI Polmed',
+        'name' => 'Bussiness Development',
         'description' => 'A digital showcase for student-made products and businesses at Medan State Polytechnic.',
     ],
     'nav' => [

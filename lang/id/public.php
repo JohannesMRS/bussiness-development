@@ -2,7 +2,7 @@
 
 return [
     'brand' => [
-        'name' => 'BizDev HMPS MI Polmed',
+        'name' => 'Bussiness Development',
         'description' => 'Etalase digital karya dan usaha mahasiswa Politeknik Negeri Medan.',
     ],
     'nav' => [

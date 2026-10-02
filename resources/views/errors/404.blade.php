@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', '404 | BizDev HMPS MI Polmed')
+@section('title', '404 | Bussiness Development')
 @section('meta_description', __('public.error.not_found_body'))
 
 @section('content')

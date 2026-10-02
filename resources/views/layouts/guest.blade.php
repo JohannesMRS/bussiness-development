@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title', config('app.name', 'BizDev HMPS MI Polmed'))</title>
+        <title>@yield('title', config('app.name', 'Bussiness Development'))</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -32,7 +32,7 @@
             <div class="relative w-full max-w-md">
                 <a href="{{ route('home') }}" class="mb-8 flex flex-col items-center gap-3 text-center">
                     <span class="flex h-16 w-16 items-center justify-center rounded-3xl bg-primary text-xl font-black text-white shadow-soft dark:text-slate-950">BD</span>
-                    <span class="font-display text-2xl font-bold text-ink">BizDev HMPS MI Polmed</span>
+                    <span class="font-display text-2xl font-bold text-ink">Bussiness Development</span>
                 </a>
                 <div class="rounded-[2rem] border border-slate-200 bg-surface p-6 shadow-soft sm:p-9 dark:border-slate-700">
                     {{ $slot }}

@@ -1,8 +1,7 @@
-@section('title', 'Masuk Admin/Seller | BizDev HMPS MI Polmed')
+@section('title', 'Masuk Admin/Seller | Bussiness Development')
 
 <x-guest-layout>
     <div class="mb-8">
-        <x-badge variant="primary">Portal internal</x-badge>
         <h1 class="mt-4 font-display text-3xl font-bold tracking-tight text-ink">Selamat datang kembali</h1>
         <p class="mt-2 text-sm leading-6 text-muted">Masuk untuk mengelola katalog dan usaha mahasiswa.</p>
     </div>
@@ -28,10 +27,10 @@
             <span>Ingat saya</span>
         </label>
 
-        <x-primary-button class="w-full justify-center py-3">Masuk ke dashboard <span aria-hidden="true">→</span></x-primary-button>
+        <x-primary-button class="w-full justify-center py-3">Masuk ke dashboard</x-primary-button>
     </form>
 
-    <p class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+    {{-- <p class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
         Akun seller yang dinonaktifkan tidak dapat masuk. Hubungi admin untuk memeriksa status akun atau mereset kata sandi.
-    </p>
+    </p> --}}
 </x-guest-layout>

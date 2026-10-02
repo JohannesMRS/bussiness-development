@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', ($seller->bussiness_name ?: $seller->name).' | BizDev HMPS MI Polmed')
+@section('title', ($seller->bussiness_name ?: $seller->name).' | Bussiness Development')
 @section('meta_description', $seller->bussiness_description ?: __('public.seller.business'))
 
 @section('content')

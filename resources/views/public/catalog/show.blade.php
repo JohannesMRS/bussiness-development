@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', $product->title.' | BizDev HMPS MI Polmed')
+@section('title', $product->title.' | Bussiness Development')
 @section('meta_description', $product->short_description)
 @section('og_image', \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_url) ? url('/storage/'.$product->image_url) : url('/storage/images/products/placeholder.svg'))
 @section('canonical', route('products.show', $product))
@@ -9,7 +9,7 @@
     @php
         $productImageUrl = \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image_url)
             ? url('/storage/'.$product->image_url)
-            : url('/storage/images/products/placeholder.svg');
+            : url('/public/images/comingsoon.png');
     @endphp
     <section class="page-container py-8 sm:py-12">
         <nav aria-label="Breadcrumb" class="mb-7 flex flex-wrap items-center gap-2 text-sm text-muted">

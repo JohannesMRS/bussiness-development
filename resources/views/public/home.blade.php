@@ -1,13 +1,13 @@
 @extends('layouts.public')
 
-@section('title', __('public.nav.home').' | BizDev HMPS MI Polmed')
+@section('title', __('public.nav.home').' | Bussiness Development')
 @section('meta_description', __('public.brand.description'))
 
 @section('content')
     <section class="relative isolate overflow-hidden bg-hero-glow">
         <div class="page-container grid min-h-[620px] items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:py-24">
             <div class="relative z-10" data-reveal>
-                <span class="eyebrow"><span class="h-2 w-2 rounded-full bg-accent"></span>{{ __('public.home.eyebrow') }}</span>
+                {{-- <span class="eyebrow"><span class="h-2 w-2 rounded-full bg-accent"></span>{{ __('public.home.eyebrow') }}</span> --}}
                 <h1 class="mt-6 max-w-3xl font-display text-5xl font-bold leading-[1.06] tracking-tight text-ink sm:text-6xl lg:text-7xl">{{ __('public.home.title') }}</h1>
                 <p class="mt-6 max-w-xl text-base leading-8 text-muted sm:text-lg">{{ __('public.home.lead') }}</p>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -39,7 +39,7 @@
                         </a>
                         <div class="flex flex-wrap items-end justify-between gap-4 px-2 pb-2 pt-5 sm:px-3">
                             <div>
-                                <x-badge variant="primary">{{ __('public.home.new_heading') }}</x-badge>
+                                {{-- <x-badge variant="primary">{{ __('public.home.new_heading') }}</x-badge> --}}
                                 <h2 class="mt-3 font-display text-2xl font-bold text-ink">{{ $heroProduct->title }}</h2>
                                 <p class="mt-1 text-sm text-muted">{{ $heroProduct->seller->bussiness_name ?: $heroProduct->seller->name }}</p>
                             </div>
@@ -51,7 +51,7 @@
                     @endif
                 </div>
                 <div class="absolute -bottom-6 -left-3 rounded-2xl border border-slate-200 bg-surface px-4 py-3 shadow-card sm:-left-10 sm:px-5">
-                    <p class="text-xs font-semibold text-muted">{{ __('public.home.categories_heading') }}</p>
+                    {{-- <p class="text-xs font-semibold text-muted">{{ __('public.home.categories_heading') }}</p> --}}
                     <p class="mt-1 font-display text-lg font-bold text-primary dark:text-blue-200">{{ $categories->count() }} <span class="text-sm font-semibold text-muted">{{ __('public.nav.catalog') }}</span></p>
                 </div>
             </div>
@@ -61,7 +61,7 @@
     <section class="page-container py-16 sm:py-20" data-reveal>
         <div class="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-10">
             <div>
-                <span class="eyebrow">01 / {{ __('public.home.new_heading') }}</span>
+                {{-- <span class="eyebrow">01 / {{ __('public.home.new_heading') }}</span> --}}
                 <h2 class="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">{{ __('public.home.new_heading') }}</h2>
                 <p class="mt-2 text-sm text-muted">{{ __('public.home.new_lead') }}</p>
             </div>
@@ -82,7 +82,7 @@
         <div class="page-container">
             <div class="mb-8 flex flex-wrap items-end justify-between gap-4 sm:mb-10">
                 <div>
-                    <span class="eyebrow">02 / {{ __('public.home.featured_heading') }}</span>
+                    {{-- <span class="eyebrow">02 / {{ __('public.home.featured_heading') }}</span> --}}
                     <h2 class="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">{{ __('public.home.featured_heading') }}</h2>
                     <p class="mt-2 text-sm text-muted">{{ __('public.home.featured_lead') }}</p>
                 </div>
@@ -102,17 +102,44 @@
 
     <section class="page-container py-16 sm:py-20" data-reveal>
         <div class="mx-auto max-w-2xl text-center">
-            <span class="eyebrow">{{ __('public.home.categories_heading') }}</span>
+            {{-- <span class="eyebrow">{{ __('public.home.categories_heading') }}</span> --}}
             <h2 class="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">{{ __('public.home.categories_heading') }}</h2>
             <p class="mt-3 text-sm leading-6 text-muted">{{ __('public.home.categories_lead') }}</p>
         </div>
+        @php
+            $categoryIcons = [
+                'Fashion' => ['icon' => 'handbag', 'class' => 'bg-white text-slate-900 dark:bg-slate-800 dark:text-white'],
+                'Jasa' => ['icon' => 'toolbox', 'class' => 'bg-white text-slate-900 dark:bg-slate-800 dark:text-white'],
+                'Kuliner' => ['icon' => 'salad', 'class' => 'bg-white text-slate-900 dark:bg-slate-800 dark:text-white'],
+                'Teknologi' => ['icon' => 'monitor-cog', 'class' => 'bg-white text-slate-900 dark:bg-slate-800 dark:text-white'],
+            ];
+
+            $categoryIconPaths = [
+                'handbag' => '<path d="M6 9h12l-1 9H7L6 9Z"/><path d="M9 9V7a3 3 0 1 1 6 0v2"/><path d="M9 13h6"/>',
+                'toolbox' => '<path d="M6 10h12v8H6z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/><path d="M9 14h6"/><path d="M4 10h2"/><path d="M18 10h2"/>',
+                'salad' => '<path d="M7 10c0-2.2 2-4 5-4s5 1.8 5 4"/><path d="M6 11h12"/><path d="M8 11v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4"/><path d="M10 7c.7-1.1 1.5-1.7 2-1.7S14.3 5.9 15 7"/><path d="M5 15h14"/>',
+                'monitor-cog' => '<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="m13.5 11.5 1.2 1.2"/><path d="m14.7 8.5 1.2 1.2"/><path d="m9.3 8.5-1.2 1.2"/><path d="m10.5 11.5-1.2 1.2"/><circle cx="12" cy="10" r="2.5"/>',
+            ];
+        @endphp
         <div class="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-            @foreach ($categories as $index => $category)
-                <a href="{{ route('catalog.index', ['category' => $category->slug]) }}" class="group flex min-h-32 flex-col justify-between rounded-2xl border border-slate-200 bg-surface p-5 transition hover:-translate-y-1 hover:border-primary/30 hover:shadow-card dark:border-slate-700">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-xl {{ $index % 2 ? 'bg-accent/25 text-slate-900' : 'bg-primary/10 text-primary dark:text-blue-200' }}">
-                        <span class="font-display text-lg font-bold">{{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($category->name, 0, 1)) }}</span>
-                    </span>
-                    <span class="mt-5 flex items-center justify-between gap-2 font-bold text-ink"><span>{{ $category->name }}</span><span class="text-primary transition group-hover:translate-x-1 dark:text-blue-200" aria-hidden="true">→</span></span>
+            @foreach ($categories as $category)
+                @php
+                    $key = $category->name;
+                    $iconData = $categoryIcons[$key] ?? ['icon' => 'toolbox', 'class' => 'bg-black text-white dark:bg-slate-800 dark:text-white'];
+                    $icon = $iconData['icon'];
+                @endphp
+                <a href="{{ route('catalog.index', ['category' => $category->slug]) }}" class="card group min-h-32 border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                    <div class="card-body flex h-full flex-col justify-between p-5">
+                        <span class="flex h-12 w-12 items-center justify-center rounded-2xl {{ $iconData['class'] }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                {!! $categoryIconPaths[$icon] !!}
+                            </svg>
+                        </span>
+                        <span class="mt-5 flex items-center justify-between gap-3 text-base font-bold text-slate-900 dark:text-slate-100">
+                            <span>{{ $category->name }}</span>
+                            <span class="text-slate-900 transition group-hover:translate-x-1 dark:text-blue-200" aria-hidden="true">→</span>
+                        </span>
+                    </div>
                 </a>
             @endforeach
         </div>
@@ -121,16 +148,28 @@
     <section class="border-y border-slate-200 bg-page py-16 dark:border-slate-800 sm:py-20" data-reveal>
         <div class="page-container">
             <div class="max-w-2xl">
-                <span class="eyebrow">{{ __('public.home.how_eyebrow') }}</span>
+                {{-- <span class="eyebrow">{{ __('public.home.how_eyebrow') }}</span> --}}
                 <h2 class="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">{{ __('public.home.how_heading') }}</h2>
                 <p class="mt-3 text-sm leading-7 text-muted">{{ __('public.home.how_lead') }}</p>
             </div>
             <div class="mt-9 grid gap-4 md:grid-cols-3">
                 @foreach ([1, 2, 3] as $step)
+                    @php
+                        $stepTitle = match ($step) {
+                            1 => __('public.home.step_one_title'),
+                            2 => __('public.home.step_two_title'),
+                            default => __('public.home.step_three_title'),
+                        };
+                        $stepBody = match ($step) {
+                            1 => __('public.home.step_one_body'),
+                            2 => __('public.home.step_two_body'),
+                            default => __('public.home.step_three_body'),
+                        };
+                    @endphp
                     <article class="rounded-3xl border border-slate-200 bg-surface p-6 dark:border-slate-700">
                         <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-sm font-black text-white dark:text-slate-950">0{{ $step }}</span>
-                        <h3 class="mt-5 font-display text-xl font-bold text-ink">{{ __('public.home.step_'.$step.'_title') }}</h3>
-                        <p class="mt-2 text-sm leading-6 text-muted">{{ __('public.home.step_'.$step.'_body') }}</p>
+                        <h3 class="mt-5 font-display text-xl font-bold text-ink">{{ $stepTitle }}</h3>
+                        <p class="mt-2 text-sm leading-6 text-muted">{{ $stepBody }}</p>
                     </article>
                 @endforeach
             </div>
