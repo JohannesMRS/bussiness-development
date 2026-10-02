@@ -30,6 +30,10 @@ class ProfileTest extends TestCase
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'whatsapp_number' => '081234567890',
+                'major' => 'Manajemen Informatika',
+                'bussiness_name' => 'Usaha Uji',
+                'bussiness_description' => 'Deskripsi usaha uji',
             ]);
 
         $response
@@ -52,6 +56,10 @@ class ProfileTest extends TestCase
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
+                'whatsapp_number' => '081234567890',
+                'major' => 'Manajemen Informatika',
+                'bussiness_name' => 'Usaha Uji',
+                'bussiness_description' => 'Deskripsi usaha uji',
             ]);
 
         $response
@@ -64,6 +72,8 @@ class ProfileTest extends TestCase
     public function test_user_can_delete_their_account(): void
     {
         $user = User::factory()->create();
+        $user->role = User::ROLE_ADMIN;
+        $user->save();
 
         $response = $this
             ->actingAs($user)
@@ -82,6 +92,8 @@ class ProfileTest extends TestCase
     public function test_correct_password_must_be_provided_to_delete_account(): void
     {
         $user = User::factory()->create();
+        $user->role = User::ROLE_ADMIN;
+        $user->save();
 
         $response = $this
             ->actingAs($user)
@@ -95,5 +107,16 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_seller_cannot_delete_their_account_or_owned_products(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->delete('/profile', ['password' => 'password'])
+            ->assertForbidden();
+
+        $this->assertModelExists($user);
     }
 }

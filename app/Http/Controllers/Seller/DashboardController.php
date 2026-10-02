@@ -3,42 +3,23 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(){
-        $products = Product::latest()->paginate(10);
-        return view ('seller.index', compact('products'));
+    public function index(Request $request): View
+    {
+        $products = Product::whereBelongsTo($request->user(), 'seller')
+            ->with('category')
+            ->latest()
+            ->paginate(10);
+        $productCounts = Product::whereBelongsTo($request->user(), 'seller')
+            ->selectRaw('status, COUNT(*) AS aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
+
+        return view('seller.index', compact('products', 'productCounts'));
     }
-
-    public function store(Request $request){
-        $request->validate([
-            'title'=>'required',
-            'slug'=>'required|unique:products',
-            'short_description'=>'required',
-            'full_description'=>'required',
-            'price'=>'required',
-            'image_url'=>'required',
-            'payment_proof'=>'required',
-        ]);
-
-        Product::create([
-            'title'=>$request->title,
-            'slug'=>$request->slug,
-            'short_description'=>$request->shortDescription,
-            'full_description'=>$request->fullDescription,
-            'price'=>$request->price,
-            'image_url'=>$request->image_url,
-            'payment_proof'=>$request->payment_proof,
-        ]);
-
-        return redirect()->route('seller.dashboard')->with('success', 'Product created successfully');
-    }
-
-    public function show(Product $product){
-        return view('seller.product.show', compact('product'));
-    }
-
 }

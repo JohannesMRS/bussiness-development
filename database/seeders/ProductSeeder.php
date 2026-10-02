@@ -4,17 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Gambar memakai path placeholder: public/images/products/{slug}.jpg
-     * dan galeri {slug}-2.jpg, {slug}-3.jpg. Ganti dengan foto asli nanti.
-     */
     public function run(): void
     {
         $categories = Category::pluck('id', 'slug');
@@ -91,32 +86,30 @@ class ProductSeeder extends Seeder
                 500000, 'rejected', false, 0, 'Deskripsi kurang jelas dan belum ada contoh tampilan aplikasi. Mohon lengkapi lalu ajukan kembali.'],
         ];
 
-        foreach ($rows as $i => [$sellerIdx, $catSlug, $title, $short, $full, $price, $status, $featured, $views, $reason]) {
+        foreach ($rows as [$sellerIdx, $catSlug, $title, $short, $full, $price, $status, $featured, $views, $reason]) {
             $slug = Str::slug($title);
+            $product = Product::firstOrNew(['slug' => $slug]);
 
-            $product = Product::updateOrCreate(['slug' => $slug], [
-                'user_id' => $sellers[$sellerIdx],
+            if ($product->exists) {
+                continue;
+            }
+
+            $product->fill([
                 'category_id' => $categories[$catSlug],
                 'title' => $title,
                 'short_description' => $short,
                 'full_description' => $full,
                 'price' => $price,
-                'image_url' => "images/products/{$slug}.jpg",
-                'status' => $status,
-                'rejection_reason' => $reason,
-                'is_featured' => $featured,
-                'payment_proof' => sprintf('payment-proofs/bukti-%02d.jpg', $i + 1),
-                'views_count' => $views,
+                'image_url' => 'images/products/placeholder.svg',
             ]);
-
-            $product->images()->delete();
-            foreach ([2, 3] as $n => $suffix) {
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => "images/products/{$slug}-{$suffix}.jpg",
-                    'sort_order' => $n + 1,
-                ]);
-            }
+            $product->user_id = $sellers[$sellerIdx];
+            $product->status = $status;
+            $product->rejection_reason = $reason;
+            $product->is_featured = $featured;
+            $product->payment_proof = 'payment-proofs/placeholder.svg';
+            $product->views_count = $views;
+            $product->fee_amount = Product::calculateFee((int) $price);
+            $product->save();
         }
     }
 }

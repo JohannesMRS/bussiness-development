@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder tim BizDev</title>
+  <desc id="desc">Ilustrasi demo untuk foto tim Business Development HMPS MI Polmed</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d3b66"/><stop offset="1" stop-color="#0055ff"/></linearGradient></defs>
+  <rect width="1200" height="760" rx="48" fill="url(#bg)"/>
+  <circle cx="600" cy="320" r="165" fill="#ffb703" opacity=".92"/>
+  <path d="M290 680c24-163 143-250 310-250s286 87 310 250" fill="#fff" opacity=".92"/>
+  <text x="600" y="720" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#fff">PLACEHOLDER DEMO — GANTI DENGAN FOTO TIM RESMI</text>
+</svg>

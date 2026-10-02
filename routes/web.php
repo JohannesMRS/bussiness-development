@@ -1,17 +1,27 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\SellerController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Seller\DashboardController as SellerDashboardController;
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SellerDirectoryController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(SetLocale::class)->group(function (): void {
+    Route::get('/', [CatalogController::class, 'home'])->name('home');
+    Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog.index');
+    Route::get('/produk/{product:slug}', [CatalogController::class, 'show'])->name('products.show');
+    Route::get('/penjual', [SellerDirectoryController::class, 'index'])->name('sellers.index');
+    Route::get('/penjual/{id}', [SellerDirectoryController::class, 'show'])->whereNumber('id')->name('sellers.show');
+    Route::get('/tentang-kami', AboutController::class)->name('about');
+    Route::post('/locale', [LocaleController::class, 'update'])->name('locale.switch');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -21,26 +31,21 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-// Admin
-Route::middleware(['auth', 'verified', 'role:admin'])
-->prefix('admin')->group(function(){
-    Route::get('/admin/index', [AdminDashboardController::class, 'index'])->name('admin.index');
-    Route::get('/admin/product', [AdminProductController::class, 'index'])->name('admin.product.index');
-    Route::post('/admin/product/store', [AdminProductController::class, 'store'])->name('admin.product.store');
-    Route::get('/admin/product/{id}', [AdminProductController::class, 'show'])->name('admin.product.show');
-    Route::get('/admin/product/{id}/edit', [AdminProductController::class, 'edit'])->name('admin.product.edit');
-    Route::put('/admin/product/{id}', [AdminProductController::class, 'update'])->name('admin.product.update'); 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/index', [AdminDashboardController::class, 'index'])->name('index');
+    Route::resource('product', AdminProductController::class);
+    Route::post('product/{product}/approve', [AdminProductController::class, 'approve'])->name('product.approve');
+    Route::post('product/{product}/reject', [AdminProductController::class, 'reject'])->name('product.reject');
+    Route::patch('product/{product}/featured', [AdminProductController::class, 'toggleFeatured'])->name('product.featured');
+    Route::get('product/{product}/payment-proof', [AdminProductController::class, 'paymentProof'])->name('product.payment-proof');
+
+    Route::resource('seller', SellerController::class)->only(['index', 'create', 'store', 'edit', 'update']);
+    Route::patch('seller/{seller}/active', [SellerController::class, 'toggleActive'])->name('seller.active');
+    Route::put('seller/{seller}/password', [SellerController::class, 'resetPassword'])->name('seller.password');
 });
 
-
-
-// Seller
-Route::middleware(['auth', 'verified', 'role:seller'])
-->group(function(){
-    Route::get('/seller/index', [SellerDashboardController::class, 'index'])->name('seller.index');
-    Route::get('/seller/product', [SellerProductController::class, 'index'])->name('seller.product.index');
-    Route::post('/seller/product/store', [SellerProductController::class, 'store'])->name('seller.product.store');
-    Route::get('/seller/product/{id}', [SellerProductController::class, 'show'])->name('seller.product.show');
-    Route::get('/seller/product/{id}/edit', [SellerProductController::class, 'edit'])->name('seller.product.edit');
-    Route::put('/seller/product/{id}', [SellerProductController::class, 'update'])->name('seller.product.update');
+Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
+    Route::get('/index', [SellerDashboardController::class, 'index'])->name('index');
+    Route::resource('product', SellerProductController::class);
+    Route::get('product/{product}/payment-proof', [SellerProductController::class, 'paymentProof'])->name('product.payment-proof');
 });

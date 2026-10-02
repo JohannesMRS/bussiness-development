@@ -1,3 +1,132 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	color-scheme: light;
+	--color-primary: #0d3b66;
+	--color-secondary: #0055ff;
+	--color-accent: #ffb703;
+	--color-bg: #f8f9fa;
+	--color-surface: #ffffff;
+	--color-text-main: #1e293b;
+	--color-text-muted: #64748b;
+	--tw-primary: 13 59 102;
+	--tw-secondary: 0 85 255;
+	--tw-accent: 255 183 3;
+	--tw-page: 248 249 250;
+	--tw-surface: 255 255 255;
+	--tw-ink: 30 41 59;
+	--tw-muted: 100 116 139;
+}
+
+.dark {
+	color-scheme: dark;
+	--color-primary: #7db9ff;
+	--color-secondary: #76a5ff;
+	--color-accent: #ffd166;
+	--color-bg: #0b1220;
+	--color-surface: #111c2e;
+	--color-text-main: #f1f5f9;
+	--color-text-muted: #bdc9d8;
+	--tw-primary: 125 185 255;
+	--tw-secondary: 118 165 255;
+	--tw-accent: 255 209 102;
+	--tw-page: 11 18 32;
+	--tw-surface: 17 28 46;
+	--tw-ink: 241 245 249;
+	--tw-muted: 189 201 216;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	[x-cloak] {
+		display: none !important;
+	}
+
+	body {
+		@apply bg-page text-ink antialiased;
+	}
+
+	button,
+	a,
+	input,
+	select,
+	textarea {
+		@apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-page;
+	}
+
+	::selection {
+		background: var(--color-secondary);
+		color: #ffffff;
+	}
+}
+
+@layer components {
+	.page-container {
+		@apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+	}
+
+	.eyebrow {
+		@apply inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-primary;
+	}
+
+	.form-control {
+		@apply min-h-11 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-secondary focus:ring-secondary dark:border-slate-600 dark:bg-slate-900 dark:text-slate-50 dark:placeholder:text-slate-500;
+	}
+
+	.dashboard-card {
+		@apply rounded-2xl border border-slate-200 bg-surface p-5 shadow-card dark:border-slate-700;
+	}
+}
+
+.reveal,
+[data-reveal] {
+	opacity: 0;
+	transform: translateY(14px);
+	transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.reveal.is-visible,
+[data-reveal].is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+nav[aria-label="Pagination Navigation"] a,
+nav[aria-label="Pagination Navigation"] span {
+	border-color: rgb(var(--tw-muted) / 0.22);
+	background-color: var(--color-surface);
+	color: var(--color-text-main);
+}
+
+nav[aria-label="Pagination Navigation"] a:hover {
+	background-color: rgb(var(--tw-primary) / 0.08);
+	color: var(--color-primary);
+}
+
+nav[aria-label="Pagination Navigation"] span[aria-current="page"] span {
+	border-color: var(--color-primary);
+	background-color: var(--color-primary);
+	color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	.reveal,
+	[data-reveal] {
+		opacity: 1;
+		transform: none;
+	}
+}

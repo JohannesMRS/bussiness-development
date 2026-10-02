@@ -1,160 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Create New Product - Tutorial CRUD Laravel 12 @ qadrlabs.com</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-</head>
-
-<body>
-
-<div class="container mx-auto mt-10 mb-10 px-10">
-    <div class="grid grid-cols-8 gap-4 p-5">
-        <div class="col-span-4 mt-2">
-            <h1 class="text-3xl font-bold">
-                CREATE NEW PRODUCT
-            </h1>
-        </div>
-        <div class="col-span-4">
-
-        </div>
-    </div>
-    <div class="bg-white p-5 rounded shadow-sm">
-        <form action="{{ route('seller.product.store') }}" method="POST">
+<x-app-layout>
+    <x-slot name="header"><div><p class="text-xs font-bold uppercase tracking-[0.16em] text-primary dark:text-blue-200">Produk saya</p><h1 class="mt-1 font-display text-2xl font-bold text-ink">Ajukan produk baru</h1></div></x-slot>
+    <main class="page-container grid gap-6 py-8 sm:py-10 lg:grid-cols-[1fr_.68fr] lg:items-start">
+        <form x-data="{ price: {{ (int) old('price', 0) }}, imagePreview: null }" method="POST" action="{{ route('seller.product.store') }}" enctype="multipart/form-data" class="dashboard-card space-y-5">
             @csrf
-
-            <div class="mb-5">
-                <label for="name">Name</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="name" value="{{ old('name') }}" required>
-
-                <!-- error message untuk name -->
-                @error('name')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
+            <div>
+                <label for="category_id" class="mb-2 block text-sm font-semibold text-ink">Kategori</label>
+                <select id="category_id" name="category_id" required class="form-control">
+                    <option value="">Pilih kategori</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                @error('category_id')<x-input-error :messages="[$message]" />@enderror
             </div>
-
-            <div class="mb-5">
-                <label for="code">Code</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="code" value="{{ old('code') }}" required>
-
-                <!-- error message untuk code -->
-                @error('code')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
+            <div><label for="title" class="mb-2 block text-sm font-semibold text-ink">Nama produk</label><input id="title" name="title" value="{{ old('title') }}" required class="form-control">@error('title')<x-input-error :messages="[$message]" />@enderror</div>
+            <div><label for="short_description" class="mb-2 block text-sm font-semibold text-ink">Deskripsi singkat</label><textarea id="short_description" name="short_description" rows="3" required class="form-control">{{ old('short_description') }}</textarea>@error('short_description')<x-input-error :messages="[$message]" />@enderror</div>
+            <div><label for="full_description" class="mb-2 block text-sm font-semibold text-ink">Deskripsi lengkap</label><textarea id="full_description" name="full_description" rows="6" required class="form-control">{{ old('full_description') }}</textarea>@error('full_description')<x-input-error :messages="[$message]" />@enderror</div>
+            <div>
+                <label for="price" class="mb-2 block text-sm font-semibold text-ink">Harga (Rp)</label>
+                <input id="price" name="price" type="number" min="1" step="1" x-model.number="price" value="{{ old('price') }}" required class="form-control">
+                @error('price')<x-input-error :messages="[$message]" />@enderror
+                <p class="mt-2 text-sm text-muted">Estimasi listing fee 1%: <strong class="text-ink">Rp <span x-text="new Intl.NumberFormat('id-ID').format(Math.floor((Number(price)||0)/100)+(((Number(price)||0)%100)>=50?1:0))">0</span></strong> <span class="text-xs">(server menentukan nilai final)</span></p>
             </div>
-
-            <div class="mb-5">
-                <label for="price">Price</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="price" value="{{ old('price') }}" required>
-
-                <!-- error message untuk price -->
-                @error('price')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
+            <div>
+                <label for="image" class="mb-2 block text-sm font-semibold text-ink">Foto produk <span class="font-normal text-muted">(JPG/PNG/WebP, maksimal 2 MB)</span></label>
+                <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" required class="form-control file:me-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-sm file:font-bold file:text-primary" @change="imagePreview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null">
+                <img x-show="imagePreview" x-cloak :src="imagePreview" alt="Pratinjau foto produk" class="mt-4 aspect-[4/3] max-h-64 w-full rounded-2xl object-cover">
+                @error('image')<x-input-error :messages="[$message]" />@enderror
             </div>
-
-            <div class="mb-5">
-                <label for="stock">Stock</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="stock" value="{{ old('stock') }}" required>
-
-                <!-- error message untuk stock -->
-                @error('stock')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
+            <div>
+                <label for="payment_proof" class="mb-2 block text-sm font-semibold text-ink">Bukti transfer <span class="font-normal text-muted">(JPG/PNG/WebP, maksimal 2 MB)</span></label>
+                <input id="payment_proof" name="payment_proof" type="file" accept="image/jpeg,image/png,image/webp" required class="form-control file:me-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-sm file:font-bold file:text-primary">
+                @error('payment_proof')<x-input-error :messages="[$message]" />@enderror
             </div>
-
-            <div class="mt-3">
-                <button type="submit"
-                        class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                    Save
-                </button>
-                <a href="{{ route('seller.product.index') }}"
-                   class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">back</a>
-            </div>
-
+            <div class="flex flex-wrap justify-end gap-3 border-t border-slate-200 pt-5 dark:border-slate-700"><x-button :href="route('seller.product.index')" variant="secondary">Batal</x-button><x-button type="submit">Ajukan untuk ditinjau</x-button></div>
         </form>
 
-    </div>
-
-</div>
-
-
-</body>
-
-</html>
+        <aside class="space-y-4 lg:sticky lg:top-28">
+            <section class="rounded-3xl bg-primary p-6 text-white shadow-soft dark:text-slate-950">
+                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 dark:bg-white/40"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M5 8h11a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+                <h2 class="mt-4 font-display text-xl font-bold">Biaya listing & rekening</h2>
+                <p class="mt-2 text-sm leading-6 text-white/80 dark:text-slate-900/80">Biaya satu kali sebesar 1% dari harga. Pembayaran dilakukan di luar situs setelah transfer.</p>
+                <div class="mt-5 rounded-2xl bg-white/10 p-4 text-sm leading-6 dark:bg-white/40">
+                    <p class="font-bold">{{ $bankDetails['name'] }}</p>
+                    <p>{{ $bankDetails['account_name'] }}</p>
+                    <p class="font-mono font-bold tracking-wider">{{ $bankDetails['account_number'] }}</p>
+                    @if (config('bizdev.is_demo_bank'))<p class="mt-3 rounded-xl bg-accent/30 px-3 py-2 text-xs font-extrabold text-slate-950">{{ __('public.common.demo_warning') }}</p>@endif
+                </div>
+            </section>
+            <section class="dashboard-card">
+                <h2 class="font-display text-lg font-bold text-ink">Setelah pengajuan</h2>
+                <ol class="mt-4 grid gap-3 text-sm leading-6 text-muted">
+                    <li class="flex gap-3"><span class="font-black text-primary dark:text-blue-200">01</span><span>Admin meninjau informasi produk dan bukti transfer.</span></li>
+                    <li class="flex gap-3"><span class="font-black text-primary dark:text-blue-200">02</span><span>Produk tampil setelah disetujui.</span></li>
+                    <li class="flex gap-3"><span class="font-black text-primary dark:text-blue-200">03</span><span>Pembeli menghubungi Anda langsung melalui WhatsApp.</span></li>
+                </ol>
+            </section>
+        </aside>
+    </main>
+</x-app-layout>

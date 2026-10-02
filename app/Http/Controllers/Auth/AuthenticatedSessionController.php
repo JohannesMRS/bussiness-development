@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +29,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $default=auth()->user()->role=='admin' ? route('admin.index') : route('seller.index');
+        $destination = match ($request->user()->role) {
+            User::ROLE_ADMIN => 'admin.index',
+            User::ROLE_SELLER => 'seller.index',
+            default => abort(403),
+        };
 
-        return redirect()->intended($default);
+        return redirect()->route($destination);
     }
 
     /**

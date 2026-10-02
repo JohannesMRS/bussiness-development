@@ -5,29 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_APPROVED = 'approved';
+
     public const STATUS_REJECTED = 'rejected';
 
     protected $fillable = [
-        'id',
-        'user_id',
         'category_id',
         'title',
-        'slug',
         'short_description',
         'full_description',
         'price',
         'image_url',
-        'status',
-        'rejection_reason',
-        'is_featured',
-        'payment_proof',
-        'views_count',
     ];
 
     protected function casts(): array
@@ -49,11 +43,6 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function images(): HasMany
-    {
-        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
-    }
-
     public function scopeApproved(Builder $query): Builder
     {
         return $query->where('status', self::STATUS_APPROVED);
@@ -69,20 +58,58 @@ class Product extends Model
         return $query->where('is_featured', true);
     }
 
+    public function scopePubliclyVisible(Builder $query): Builder
+    {
+        return $query->approved()->whereHas('seller', function (Builder $sellerQuery): void {
+            $sellerQuery
+                ->where('role', User::ROLE_SELLER)
+                ->where('is_active', true);
+        });
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    /** Link WhatsApp sesuai format di PRD, memakai nomor seller. */
-    public function getWhatsappUrlAttribute(): string
+    public static function makeUniqueSlug(string $title, ?int $ignoreId = null): string
     {
+        $baseSlug = Str::slug($title) ?: 'product';
+        $slug = $baseSlug;
+        $suffix = 2;
+
+        while (static::query()
+            ->where('slug', $slug)
+            ->when($ignoreId !== null, fn (Builder $query) => $query->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = $baseSlug.'-'.$suffix;
+            $suffix++;
+        }
+
+        return $slug;
+    }
+
+    /** Link WhatsApp sesuai format di PRD, memakai nomor seller. */
+    public function getWhatsappUrlAttribute(): ?string
+    {
+        $seller = $this->seller;
+        $number = User::normalizeWhatsappNumber($seller?->whatsapp_number);
+
+        if ($seller === null || $number === null || $number === '') {
+            return null;
+        }
+
         $text = sprintf(
             'Halo %s, saya tertarik dengan produk %s di BizDev HMPS MI.',
-            $this->seller->name,
+            $seller->name,
             $this->title
         );
 
-        return 'https://wa.me/' . $this->seller->whatsapp_number . '?text=' . rawurlencode($text);
+        return 'https://wa.me/'.$number.'?text='.rawurlencode($text);
+    }
+
+    public static function calculateFee(int $price): int
+    {
+        return intdiv($price, 100) + (($price % 100) >= 50 ? 1 : 0);
     }
 }
