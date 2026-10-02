@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
-class DashboardController extends Controller
+class ProductController extends Controller
 {
     public function index(){
         $products = Product::latest()->paginate(10);
-        return view ('seller.index', compact('products'));
+        return view('seller.product.index');
     }
 
     public function store(Request $request){
@@ -40,5 +40,4 @@ class DashboardController extends Controller
     public function show(Product $product){
         return view('seller.product.show', compact('product'));
     }
-
 }
